@@ -20,6 +20,7 @@ namespace MaskooAPI.Controllers
         public DiaryController(IMapper mapper, IDiaryService diaryService)
         {
             _mapper = mapper;
+            _diaryService = diaryService;
         }
 
         [HttpGet]
