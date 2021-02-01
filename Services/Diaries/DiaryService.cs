@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DAL.Entities.Diaries;
 using DAL.Entities.Diary;
 using DAL.Repositories.Diaries;
+using Services.Diaries.Models;
 
 namespace Services.Diaries
 {
@@ -10,14 +11,22 @@ namespace Services.Diaries
     {
 
         private readonly IDiaryRepository _diaryRepository;
+        private readonly IDayRepository _dayRepository;
 
-        public DiaryService(IDiaryRepository diaryRepository)
+        public DiaryService(IDiaryRepository diaryRepository, IDayRepository dayRepository)
         {
             _diaryRepository = diaryRepository;
+            _dayRepository = dayRepository;
         }
 
         public async Task<Diary> GetDiaryAsync(Guid userId, DateTime? from, DateTime? to) {
-            return await _diaryRepository.GetByUserIdAsync(userId);
+            var diary = await _diaryRepository.GetByUserIdAsync(userId);
+            if (diary == null)
+            {
+                throw new Exception($"Diary not found for user {userId}");
+            }
+
+            return diary;
         }
 
         public async Task<Diary> CreateDiaryAsync(Guid userId) {
@@ -45,7 +54,40 @@ namespace Services.Diaries
             diary.UpdatedBy = userId;
             var result = _diaryRepository.Update(diary);
             await _diaryRepository.SaveAsync();
+
             return result;
+        }
+
+        public async Task<Diary> UpdateDayAsync(Guid diaryId, Guid dayId, UpdateDayParameter updateDayParameter, Guid userId)
+        {
+            var day = await _dayRepository.GetByIdAsync(dayId);
+            if (day == null)
+            {
+                throw new Exception($"Day not found with id {dayId}");
+            }
+
+            day.Content = updateDayParameter.Content;
+            day.UpdatedAt = DateTime.UtcNow;
+            day.UpdatedBy = userId;
+
+            var result = _dayRepository.Update(day);
+            await _dayRepository.SaveAsync();
+
+            return await _diaryRepository.GetByIdAsync(diaryId);
+        }
+
+        public async Task<Diary> RemoveDay(Guid diaryId, Guid dayId)
+        {
+            var day = await _dayRepository.GetByIdAsync(dayId);
+            if (day == null)
+            {
+                throw new Exception($"Day not found with id {dayId}");
+            }
+
+            var result = _dayRepository.Remove(day);
+            await _dayRepository.SaveAsync();
+
+            return await _diaryRepository.GetByIdAsync(diaryId);
         }
     }
 }

@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
   </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Diaries\" />
-    <Folder Include="Diaries\Models\" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 </Project>

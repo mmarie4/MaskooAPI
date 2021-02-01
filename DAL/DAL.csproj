@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
     <Folder Include="Entities\" />
-    <Folder Include="Repositories\Diaries\" />
     <Folder Include="Entities\Diaries\" />
     <Folder Include="Entities\User\" />
   </ItemGroup>

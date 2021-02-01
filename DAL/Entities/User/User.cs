@@ -15,5 +15,11 @@ namespace DAL.Entities.User
         [Column("email")]
         public string Email { get; set; }
 
+        [Column("password_hash")]
+        public string PasswordHash { get; set; }
+
+        [Column("password_salt")]
+        public string PasswordSalt { get; set; }
+
     }
 }

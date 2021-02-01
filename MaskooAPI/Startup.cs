@@ -1,5 +1,7 @@
 using DAL;
 using DAL.Repositories.Diaries;
+using DAL.Repositories.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Services.Diaries;
+using Services.HashService;
+using Services.Users;
+using AutoMapper;
 
 namespace MaskooAPI
 {
@@ -29,12 +34,20 @@ namespace MaskooAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MaskooAPI", Version = "v1" });
             });
+            services.AddAutoMapper(typeof(Startup));
+
+            // Configure JWT authentication.
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 
             // Services
             services.AddTransient<IDiaryService, DiaryService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ITokenService, TokenService>();
 
             // Repositories
             services.AddTransient<IDiaryRepository, DiaryRepository>();
+            services.AddTransient<IDayRepository, DayRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             // Db context
             services.AddDbContext<AppDbContext>(opt =>
@@ -56,6 +69,8 @@ namespace MaskooAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

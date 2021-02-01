@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DAL.Entities.Diaries;
+using Services.Diaries.Models;
+using System;
 using System.Threading.Tasks;
-using DAL.Entities.Diaries;
 
 namespace Services.Diaries
 {
@@ -11,5 +12,9 @@ namespace Services.Diaries
         Task<Diary> CreateDiaryAsync(Guid userId);
 
         Task<Diary> AddDayAsync(Guid userId, Guid diaryId);
+
+        Task<Diary> UpdateDayAsync(Guid diaryId, Guid dayId, UpdateDayParameter updateDayParameter, Guid userId);
+
+        Task<Diary> RemoveDay(Guid diaryId, Guid dayId);
     }
 }

@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity>
-        where TEntity : class
+        where TEntity : Entity
     {
         public Repository([NotNull] DbContext context)
         {
@@ -33,6 +34,16 @@ namespace DAL.Repositories
         {
             return await Entities
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get one entity by id
+        /// </summary>
+        /// <param name="id">Id of the entity</param>
+        /// <returns></returns>
+        public async Task<TEntity> GetByIdAsync(Guid id)
+        {
+            return await Entities.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         /// <summary>
