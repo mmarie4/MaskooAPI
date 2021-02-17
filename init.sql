@@ -30,3 +30,13 @@ CREATE TABLE users (
     timestamp updated_at,
     uuid updated_by
 );
+
+CREATE TABLE tools (
+    uuid id,
+    varchar label,
+    varchar value,
+    timestamp created_at,
+    uuid created_by,
+    timestamp updated_at,
+    uuid updated_by
+);

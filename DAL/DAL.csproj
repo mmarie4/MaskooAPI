@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="Entities\Diaries\" />
     <Folder Include="Entities\User\" />
   </ItemGroup>

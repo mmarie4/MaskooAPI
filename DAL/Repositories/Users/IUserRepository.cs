@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories.Users
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
         Task<User> GetByEmailAsync(string email);
     }

@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Services.Diaries;
-using Services.HashService;
+using Services.SecretService;
 using Services.Users;
 using AutoMapper;
 
@@ -42,7 +42,7 @@ namespace MaskooAPI
             // Services
             services.AddTransient<IDiaryService, DiaryService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ISecretService, SecretService>();
 
             // Repositories
             services.AddTransient<IDiaryRepository, DiaryRepository>();

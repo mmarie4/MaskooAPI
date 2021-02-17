@@ -1,10 +1,11 @@
 ﻿using DAL.Entities.User;
 
-namespace Services.HashService
+namespace Services.SecretService
 {
-    public interface ITokenService
+    public interface ISecretService
     {
         string HashUsingPbkdf2(string password, string salt);
+        string GenerateSalt();
         string GenerateSecureSecret();
         string GenerateToken(User user);
     }

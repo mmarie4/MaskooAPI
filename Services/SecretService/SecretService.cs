@@ -5,15 +5,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-namespace Services.HashService
+namespace Services.SecretService
 {
-    public class TokenService : ITokenService
+    public class SecretService : ISecretService
     {
-        //public const string Issuer = "Maskoo";
-        //public const string Audience = "http://maskoo.com";
-
-        public const string Secret = "OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw==";
-
+        /// <summary>
+        /// Hash a password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
+        /// <returns></returns>
         public string HashUsingPbkdf2(string password, string salt)
         {
             using var bytes = new Rfc2898DeriveBytes(password, Convert.FromBase64String(salt), 10000, HashAlgorithmName.SHA256);
@@ -22,11 +23,34 @@ namespace Services.HashService
             return hash;
         }
 
+        /// <summary>
+        /// Generate a random base64 string for salt
+        /// </summary>
+        /// <returns></returns>
+        public string GenerateSalt()
+        {
+            var randomBytes = new byte[64];
+            using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
+            {
+                rngCryptoServiceProvider.GetNonZeroBytes(randomBytes);
+            }
+            return Convert.ToBase64String(randomBytes);
+        }
+
+
+
+
+
         // Important note***************
         // The secret is a base64-encoded string, always make sure to use a secure long string so no one can guess it. ever!.
         // a very recommended approach to use is through the HMACSHA256() class, to generate such a secure secret, you can refer to the below function
         // you can run a small test by calling the GenerateSecureSecret() function to generate a random secure secret once, grab it, and use it as the secret above 
         // or you can save it into appsettings.json file and then load it from them, the choice is yours
+
+        //public const string Issuer = "Maskoo";
+        //public const string Audience = "http://maskoo.com";
+
+        public const string Secret = "OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw==";
 
         public string GenerateSecureSecret()
         {

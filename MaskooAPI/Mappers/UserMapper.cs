@@ -12,6 +12,8 @@ namespace MaskooAPI.Mappers
             CreateMap<LoginRequest, LoginParameter>();
 
             CreateMap<User, UserResponse>();
+
+            CreateMap<SignUpRequest, SignUpParameter>();
         }
     }
 }
