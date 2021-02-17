@@ -58,6 +58,7 @@ namespace Services.Users
             var token = await Task.Run(() => _secretService.GenerateToken(user));
 
             var result = await _userRepository.AddAsync(user);
+            await _userRepository.SaveAsync();
 
             return (result, token);
         }

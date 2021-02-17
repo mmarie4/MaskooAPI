@@ -1,42 +1,42 @@
 ﻿CREATE TABLE diaries (
-    uuid id,
-    uuid diary_id,
-    timestamp created_at,
-    uuid created_by,
-    timestamp updated_at,
-    uuid updated_by
+    id uuid,
+    diary_id uuid,
+    created_at timestamp,
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid
 );
 
 CREATE TABLE days (
-    uuid id,
-    timestamp date,
-    varchar content,
-    uuid diary_id,
-    timestamp created_at,
-    uuid created_by,
-    timestamp updated_at,
-    uuid updated_by
+    id uuid,
+    date timestamp,
+    content varchar,
+    diary_id uuid,
+    created_at timestamp,
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid
 );
 
 CREATE TABLE users (
-    uuid id,
-    varchar first_name,
-    varchar last_name,
-    varchar email,
-    varchar password_hash,
-    varchar password_salt,
-    timestamp created_at,
-    uuid created_by,
-    timestamp updated_at,
-    uuid updated_by
+    id uuid,
+    first_name varchar,
+    last_name varchar,
+    email varchar,
+    password_hash varchar,
+    password_salt varchar,
+    created_at timestamp,
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid
 );
 
 CREATE TABLE tools (
-    uuid id,
-    varchar label,
-    varchar value,
-    timestamp created_at,
-    uuid created_by,
-    timestamp updated_at,
-    uuid updated_by
+    id uuid,
+    label varchar,
+    value varchar,
+    created_at timestamp,
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid
 );
