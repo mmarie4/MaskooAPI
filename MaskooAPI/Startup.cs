@@ -1,3 +1,4 @@
+using AutoMapper;
 using DAL;
 using DAL.Repositories.Diaries;
 using DAL.Repositories.Users;
@@ -8,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Diaries;
 using Services.SecretService;
 using Services.Users;
-using AutoMapper;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MaskooAPI
 {
@@ -37,7 +40,31 @@ namespace MaskooAPI
             services.AddAutoMapper(typeof(Startup));
 
             // Configure JWT authentication.
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+          .AddJwtBearer(options =>
+          {
+              options.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuer = true,
+                  ValidateAudience = true,
+                  ValidateIssuerSigningKey = true,
+                  ValidIssuer = "https://localhost:5001",
+                  ValidAudience = "https://localhost:5001",
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw=="))
+              };
+
+              options.Events = new JwtBearerEvents
+              {
+                  OnAuthenticationFailed = context =>
+                  {
+                      if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                      {
+                          context.Response.Headers.Add("Token-Expired", "true");
+                      }
+                      return Task.CompletedTask;
+                  }
+              };
+          });
 
             // Services
             services.AddTransient<IDiaryService, DiaryService>();
@@ -68,9 +95,9 @@ namespace MaskooAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

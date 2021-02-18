@@ -1,9 +1,11 @@
 ﻿using DAL.Entities.User;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Services.SecretService
 {
@@ -47,8 +49,8 @@ namespace Services.SecretService
         // you can run a small test by calling the GenerateSecureSecret() function to generate a random secure secret once, grab it, and use it as the secret above 
         // or you can save it into appsettings.json file and then load it from them, the choice is yours
 
-        //public const string Issuer = "Maskoo";
-        //public const string Audience = "http://maskoo.com";
+        public const string Issuer = "https://localhost:5001";
+        public const string Audience = "https://localhost:5001";
 
         public const string Secret = "OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw==";
 
@@ -60,25 +62,21 @@ namespace Services.SecretService
 
         public string GenerateToken(User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Convert.FromBase64String(Secret);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
 
-            var claimsIdentity = new ClaimsIdentity(new[] {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            });
-            var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var permClaims = new List<Claim>()
             {
-                Subject = claimsIdentity,
-                //Issuer = Issuer,
-                //Audience = Audience,
-                Expires = DateTime.Now.AddMinutes(60),
-                SigningCredentials = signingCredentials,
-
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            var token = new JwtSecurityToken(Issuer, //Issure    
+                            Audience,  //Audience    
+                            permClaims,
+                            expires: DateTime.Now.AddDays(1),
+                            signingCredentials: signingCredentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
