@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DAL.Entities;
 using DAL.Entities.Diaries;
-using DAL.Entities.Diary;
+using DAL.Entities.Diaries;
 using DAL.Repositories.Diaries;
 using Services.Diaries.Models;
 
@@ -31,27 +32,30 @@ namespace Services.Diaries
 
         public async Task<Diary> CreateDiaryAsync(Guid userId) {
             var parameter = new Diary() {
-                Id = new Guid(),
                 UserId = userId
             };
+            parameter.Stamp(userId);
             var diary = await _diaryRepository.AddAsync(parameter);
             await _diaryRepository.SaveAsync();
 
             return diary;
         }
 
-        public async Task<Diary> AddDayAsync(Guid userId, Guid diaryId) {
+        public async Task<Diary> AddDayAsync(Guid userId, DateTime date) {
+
             var diary = await _diaryRepository.GetByUserIdAsync(userId);
             var day = new Day()
             {
-                Id = new Guid(),
-                DiaryId = diaryId,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = userId
+                DiaryId = diary.Id,
+                Date = date
             };
+            
+            day.Stamp(userId);
+
             diary.Days.Add(day);
-            diary.UpdatedAt = DateTime.UtcNow;
-            diary.UpdatedBy = userId;
+            
+            diary.Stamp(userId, false);
+
             var result = _diaryRepository.Update(diary);
             await _diaryRepository.SaveAsync();
 
@@ -67,8 +71,7 @@ namespace Services.Diaries
             }
 
             day.Content = updateDayParameter.Content;
-            day.UpdatedAt = DateTime.UtcNow;
-            day.UpdatedBy = userId;
+            day.Stamp(userId, false);
 
             var result = _dayRepository.Update(day);
             await _dayRepository.SaveAsync();

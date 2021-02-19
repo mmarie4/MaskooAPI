@@ -1,6 +1,6 @@
 ﻿CREATE TABLE diaries (
     id uuid,
-    diary_id uuid,
+    user_id uuid,
     created_at timestamp,
     created_by uuid,
     updated_at timestamp,

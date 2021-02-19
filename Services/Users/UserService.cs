@@ -1,4 +1,6 @@
-﻿using DAL.Entities.User;
+﻿using DAL.Entities;
+using DAL.Entities.Diaries;
+using DAL.Entities.User;
 using DAL.Repositories.Users;
 using Services.SecretService;
 using Services.Users.Models;
@@ -45,15 +47,15 @@ namespace Services.Users
             var salt = _secretService.GenerateSalt();
             var user = new User()
             {
-                Id = new Guid(),
                 Email = signUpParameter.Email,
                 FirstName = signUpParameter.FirstName,
                 LastName = signUpParameter.LastName,
                 PasswordSalt = salt.ToString(),
-                PasswordHash = _secretService.HashUsingPbkdf2(signUpParameter.Password, salt.ToString()),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                PasswordHash = _secretService.HashUsingPbkdf2(signUpParameter.Password, salt.ToString())
             };
+            user.Stamp(user.Id);
+
+            user.Diary = (new Diary()).Stamp(user.Id);
 
             var token = await Task.Run(() => _secretService.GenerateToken(user));
 

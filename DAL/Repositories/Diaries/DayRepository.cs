@@ -1,4 +1,4 @@
-﻿using DAL.Entities.Diary;
+﻿using DAL.Entities.Diaries;
 
 namespace DAL.Repositories.Diaries
 {

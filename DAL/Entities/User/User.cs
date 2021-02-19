@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Entities.Diaries;
 
 namespace DAL.Entities.User
 {
@@ -20,6 +22,8 @@ namespace DAL.Entities.User
 
         [Column("password_salt")]
         public string PasswordSalt { get; set; }
+
+        public virtual Diary Diary { get; set; }
 
     }
 }

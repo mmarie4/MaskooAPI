@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DAL.Entities.Diaries;
+using MaskooAPI.Models.Diaries;
 
 namespace MaskooAPI.Mappers
 {
@@ -6,6 +8,9 @@ namespace MaskooAPI.Mappers
     {
         public DiaryMapper()
         {
+            CreateMap<Diary, DiaryResponse>();
+
+            CreateMap<Day, DayResponse>();
         }
     }
 }

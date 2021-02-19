@@ -11,7 +11,7 @@ namespace Services.Diaries
 
         Task<Diary> CreateDiaryAsync(Guid userId);
 
-        Task<Diary> AddDayAsync(Guid userId, Guid diaryId);
+        Task<Diary> AddDayAsync(Guid userId, DateTime date);
 
         Task<Diary> UpdateDayAsync(Guid diaryId, Guid dayId, UpdateDayParameter updateDayParameter, Guid userId);
 

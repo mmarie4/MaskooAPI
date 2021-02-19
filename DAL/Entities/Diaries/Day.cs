@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DAL.Entities.Diary
+namespace DAL.Entities.Diaries
 {
     [Table("days")]
     public class Day : Entity
@@ -15,5 +15,6 @@ namespace DAL.Entities.Diary
         [Column("diary_id")]
         [ForeignKey("diaries")]
         public Guid DiaryId { get; set; }
+
     }
 }
