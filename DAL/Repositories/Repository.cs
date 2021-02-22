@@ -62,10 +62,10 @@ namespace DAL.Repositories
         /// </summary>
         /// <param name="entity">The entity to update</param>
         /// <returns>The updated entity</returns>
-        public TEntity Update(TEntity entity)
+        public Task<TEntity> Update(TEntity entity)
         {
             var result = Entities.Update(entity);
-            return result.Entity;
+            return Task.FromResult(result.Entity);
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace DAL.Repositories
         /// </summary>
         /// <param name="entity">The entity to remove</param>
         /// <returns>The removed entity</returns>
-        public TEntity Remove(TEntity entity)
+        public Task<TEntity> Remove(TEntity entity)
         {
             var result = Entities.Remove(entity);
-            return result.Entity;
+            return Task.FromResult(result.Entity);
         }
     }
 }

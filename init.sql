@@ -31,8 +31,18 @@ CREATE TABLE users (
     updated_by uuid
 );
 
-CREATE TABLE tools (
+CREATE TABLE toolboxes (
     id uuid,
+    user_id guuid,
+    label varchar,
+    created_at timestamp,
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid
+);
+
+CREATE TABLE tools (
+    toolbox_id uuid,
     label varchar,
     value varchar,
     created_at timestamp,

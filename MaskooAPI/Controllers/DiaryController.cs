@@ -4,6 +4,7 @@ using MaskooAPI.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Diaries;
+using Services.Diaries.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -34,13 +35,32 @@ namespace MaskooAPI.Controllers
             return _mapper.Map<DiaryResponse>(diary);
         }
 
-        [HttpPost("days")]
-        public async Task<DiaryResponse> AddDay()
+        [HttpPost("{diaryId}/days")]
+        public async Task<DiaryResponse> AddDay([FromRoute] Guid diaryId, [FromBody] DayCreationRequest request)
         {
-            var date = DateTime.Now;
             var userId = HttpContext.User.ExtractUserId();
 
-            var diary = await _diaryService.AddDayAsync(userId, date);
+            var diary = await _diaryService.AddDayAsync(userId, diaryId, request.Date);
+
+            return _mapper.Map<DiaryResponse>(diary);
+        }
+
+        [HttpPut("{diaryId}/days/{dayId}")]
+        public async Task<DiaryResponse> UpdateDay([FromRoute] Guid diaryId, [FromRoute] Guid dayId, [FromBody] DayUpdateRequest request)
+        {
+            var userId = HttpContext.User.ExtractUserId();
+
+            var diary = await _diaryService.UpdateDayAsync(userId, diaryId, dayId, _mapper.Map<DayUpdateParameter>(request));
+
+            return _mapper.Map<DiaryResponse>(diary);
+        }
+
+        [HttpDelete("{diaryId}/days/{dayId}")]
+        public async Task<DiaryResponse> RemoveDay([FromRoute] Guid diaryId, [FromRoute] Guid dayId)
+        {
+            var userId = HttpContext.User.ExtractUserId();
+
+            var diary = await _diaryService.RemoveDayAsync(diaryId, dayId);
 
             return _mapper.Map<DiaryResponse>(diary);
         }

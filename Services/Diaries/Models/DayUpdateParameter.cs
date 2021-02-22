@@ -1,11 +1,10 @@
 ﻿using System;
-namespace MaskooAPI.Models.Diaries
+
+namespace Services.Diaries.Models
 {
-    public class DayResponse : EntityResponse
+    public class DayUpdateParameter
     {
-
         public DateTime Date { get; set; }
-
         public string Content { get; set; }
     }
 }

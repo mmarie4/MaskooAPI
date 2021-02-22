@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using DAL.Entities;
 using DAL.Entities.Diaries;
-using DAL.Entities.Diaries;
 using DAL.Repositories.Diaries;
 using Services.Diaries.Models;
 
@@ -41,9 +40,9 @@ namespace Services.Diaries
             return diary;
         }
 
-        public async Task<Diary> AddDayAsync(Guid userId, DateTime date) {
+        public async Task<Diary> AddDayAsync(Guid userId, Guid diaryId, DateTime date) {
 
-            var diary = await _diaryRepository.GetByUserIdAsync(userId);
+            var diary = await _diaryRepository.GetByIdAsync(diaryId);
             var day = new Day()
             {
                 DiaryId = diary.Id,
@@ -56,13 +55,13 @@ namespace Services.Diaries
             
             diary.Stamp(userId, false);
 
-            var result = _diaryRepository.Update(diary);
+            var result = await _diaryRepository.Update(diary);
             await _diaryRepository.SaveAsync();
 
             return result;
         }
 
-        public async Task<Diary> UpdateDayAsync(Guid diaryId, Guid dayId, UpdateDayParameter updateDayParameter, Guid userId)
+        public async Task<Diary> UpdateDayAsync(Guid userId, Guid diaryId, Guid dayId, DayUpdateParameter updateDayParameter)
         {
             var day = await _dayRepository.GetByIdAsync(dayId);
             if (day == null)
@@ -71,15 +70,16 @@ namespace Services.Diaries
             }
 
             day.Content = updateDayParameter.Content;
+            day.Date = updateDayParameter.Date;
             day.Stamp(userId, false);
 
-            var result = _dayRepository.Update(day);
+            var result = await _dayRepository.Update(day);
             await _dayRepository.SaveAsync();
 
             return await _diaryRepository.GetByIdAsync(diaryId);
         }
 
-        public async Task<Diary> RemoveDay(Guid diaryId, Guid dayId)
+        public async Task<Diary> RemoveDayAsync(Guid diaryId, Guid dayId)
         {
             var day = await _dayRepository.GetByIdAsync(dayId);
             if (day == null)
@@ -87,7 +87,7 @@ namespace Services.Diaries
                 throw new Exception($"Day not found with id {dayId}");
             }
 
-            var result = _dayRepository.Remove(day);
+            var result = await _dayRepository.Remove(day);
             await _dayRepository.SaveAsync();
 
             return await _diaryRepository.GetByIdAsync(diaryId);

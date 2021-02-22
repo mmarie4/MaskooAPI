@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Entities.Diaries;
 using MaskooAPI.Models.Diaries;
+using Services.Diaries.Models;
 
 namespace MaskooAPI.Mappers
 {
@@ -11,6 +12,9 @@ namespace MaskooAPI.Mappers
             CreateMap<Diary, DiaryResponse>();
 
             CreateMap<Day, DayResponse>();
+
+            CreateMap<DayUpdateRequest, DayUpdateParameter>();
+
         }
     }
 }

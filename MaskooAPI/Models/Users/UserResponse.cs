@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace MaskooAPI.Models.Users
+﻿namespace MaskooAPI.Models.Users
 {
     public class UserResponse : EntityResponse
     {
-        public Guid Id { get; set; }
-
         public string Token { get; set; }
 
         public string FirstName { get; set; }

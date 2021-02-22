@@ -12,10 +12,6 @@
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Diaries\" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Services\Services.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>

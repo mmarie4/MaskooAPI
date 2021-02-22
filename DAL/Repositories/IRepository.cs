@@ -11,7 +11,7 @@ namespace DAL.Repositories
         Task<ICollection<TEntity>> GetAllAsync(int offset, int limit);
         Task<TEntity> GetByIdAsync(Guid id);
         Task<TEntity> AddAsync(TEntity entity);
-        TEntity Update(TEntity entity);
-        TEntity Remove(TEntity entity);
+        Task<TEntity> Update(TEntity entity);
+        Task<TEntity> Remove(TEntity entity);
     }
 }

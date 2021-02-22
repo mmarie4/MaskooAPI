@@ -11,10 +11,10 @@ namespace Services.Diaries
 
         Task<Diary> CreateDiaryAsync(Guid userId);
 
-        Task<Diary> AddDayAsync(Guid userId, DateTime date);
+        Task<Diary> AddDayAsync(Guid userId, Guid diaryId, DateTime date);
 
-        Task<Diary> UpdateDayAsync(Guid diaryId, Guid dayId, UpdateDayParameter updateDayParameter, Guid userId);
+        Task<Diary> UpdateDayAsync(Guid userId, Guid diaryId, Guid dayId, DayUpdateParameter updateDayParameter);
 
-        Task<Diary> RemoveDay(Guid diaryId, Guid dayId);
+        Task<Diary> RemoveDayAsync(Guid diaryId, Guid dayId);
     }
 }
