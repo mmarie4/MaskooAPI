@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -16,6 +17,7 @@ using Newtonsoft.Json.Serialization;
 using Services.Diaries;
 using Services.SecretService;
 using Services.Users;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,38 +46,45 @@ namespace MaskooAPI
                         options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                         options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                     });
+            services.AddRazorPages()
+                .AddNewtonsoftJson()
+                .WithRazorPagesRoot("/MaskooClient/Pages");
+
+            // Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MaskooAPI", Version = "v1" });
             });
+
+            // Automapper
             services.AddAutoMapper(typeof(Startup));
 
             // Configure JWT authentication.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-          .AddJwtBearer(options =>
-          {
-              options.TokenValidationParameters = new TokenValidationParameters
+              .AddJwtBearer(options =>
               {
-                  ValidateIssuer = true,
-                  ValidateAudience = true,
-                  ValidateIssuerSigningKey = true,
-                  ValidIssuer = "https://localhost:5001",
-                  ValidAudience = "https://localhost:5001",
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw=="))
-              };
-
-              options.Events = new JwtBearerEvents
-              {
-                  OnAuthenticationFailed = context =>
+                  options.TokenValidationParameters = new TokenValidationParameters
                   {
-                      if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                      ValidateIssuer = true,
+                      ValidateAudience = true,
+                      ValidateIssuerSigningKey = true,
+                      ValidIssuer = "https://localhost:5001",
+                      ValidAudience = "https://localhost:5001",
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw=="))
+                  };
+
+                  options.Events = new JwtBearerEvents
+                  {
+                      OnAuthenticationFailed = context =>
                       {
-                          context.Response.Headers.Add("Token-Expired", "true");
+                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                          {
+                              context.Response.Headers.Add("Token-Expired", "true");
+                          }
+                          return Task.CompletedTask;
                       }
-                      return Task.CompletedTask;
-                  }
-              };
-          });
+                  };
+              });
 
             // Services
             services.AddTransient<IDiaryService, DiaryService>();
@@ -103,6 +112,12 @@ namespace MaskooAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                             Path.Combine(env.ContentRootPath, "MaskooClient/wwwroot")),
+                RequestPath = "/static"
+            });
 
             app.UseRouting();
 
@@ -112,6 +127,7 @@ namespace MaskooAPI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }
