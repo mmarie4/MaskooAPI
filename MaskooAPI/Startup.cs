@@ -36,20 +36,6 @@ namespace MaskooAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers()
-                .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new SnakeCaseNamingStrategy()
-                        };
-                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                        options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                    });
-            services.AddRazorPages()
-                .AddNewtonsoftJson()
-                .WithRazorPagesRoot("/MaskooClient/Pages");
-
             // Swagger
             services.AddSwaggerGen(c =>
             {
@@ -99,6 +85,22 @@ namespace MaskooAPI
             // Db context
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvc();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    };
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                });
+            services.AddRazorPages()
+                .AddNewtonsoftJson()
+                .WithRazorPagesRoot("/MaskooClient/Pages");
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

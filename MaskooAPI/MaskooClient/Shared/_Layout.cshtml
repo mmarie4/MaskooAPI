@@ -23,13 +23,13 @@
 
             <!-- Left menu bar -->
             <div class="left-menu bg-dark text-light">
-                <div class="p-2">Diary</div>
-                <div class="p-2">Toolbox</div>
-                <div class="p-2">Notes</div>
+                <div class="p-2 nav-btn" onclick="goTo('diary')">Diary</div>
+                <div class="p-2 nav-btn" onclick="goTo('toolboxes')">Toolboxes</div>
+                <div class="p-2 nav-btn" onclick="goTo('notes')">Notes</div>
             </div>
 
             <!-- Render body -->
-            <div>
+            <div class="render-body">
                 @RenderBody()
             </div>
 

@@ -1,8 +1,14 @@
-﻿@page
+﻿@page "/diary"
 @model MaskooAPI.MaskooClient.Pages.DiaryModel
 @{
 }
 
 <h2>Diary</h2>
+<div>
+    @foreach (var day in Model.Diary.Days)
+    {
+        @await Component.InvokeAsync("DayBox", new { day = day })
+    }
+</div>
 
 
