@@ -1,6 +1,7 @@
 using AutoMapper;
 using DAL;
 using DAL.Repositories.Diaries;
+using DAL.Repositories.Notes;
 using DAL.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Services.Diaries;
+using Services.Notes;
 using Services.SecretService;
 using Services.Users;
 using System.IO;
@@ -76,17 +78,18 @@ namespace MaskooAPI
             services.AddTransient<IDiaryService, DiaryService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ISecretService, SecretService>();
+            services.AddTransient<INoteService, NoteService>();
 
             // Repositories
             services.AddTransient<IDiaryRepository, DiaryRepository>();
             services.AddTransient<IDayRepository, DayRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<INoteRepository, NoteRepository>();
 
             // Db context
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
@@ -97,10 +100,6 @@ namespace MaskooAPI
                     options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 });
-            services.AddRazorPages()
-                .AddNewtonsoftJson()
-                .WithRazorPagesRoot("/MaskooClient/Pages");
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,12 +113,6 @@ namespace MaskooAPI
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                             Path.Combine(env.ContentRootPath, "MaskooClient/wwwroot")),
-                RequestPath = "/static"
-            });
 
             app.UseRouting();
 
@@ -129,7 +122,6 @@ namespace MaskooAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }

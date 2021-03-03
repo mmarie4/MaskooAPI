@@ -42,9 +42,20 @@ CREATE TABLE toolboxes (
 );
 
 CREATE TABLE tools (
+    id uuid,
     toolbox_id uuid,
     label varchar,
     value varchar,
+    created_at timestamp,
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid
+);
+
+CREATE TABLE notes (
+    id uuid,
+    title varchar,
+    content varchar,
     created_at timestamp,
     created_by uuid,
     updated_at timestamp,

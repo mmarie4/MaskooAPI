@@ -1,1 +1,0 @@
-﻿const goTo = route => location.pathname = "/" + route;
