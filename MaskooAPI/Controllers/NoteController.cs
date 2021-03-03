@@ -35,7 +35,7 @@ namespace MaskooAPI.Controllers
             return _mapper.Map<NoteResponse>(note);
         }
 
-        [HttpGet("{required:noteId}")]
+        [HttpGet("{noteId}")]
         public async Task<NoteResponse> GetNote(Guid noteId)
         {
             var userId = HttpContext.User.ExtractUserId();
@@ -56,7 +56,7 @@ namespace MaskooAPI.Controllers
             return _mapper.Map<NoteResponse>(note);
         }
 
-        [HttpPut("{required:noteId}")]
+        [HttpPut("{noteId}")]
         public async Task<NoteResponse> UpdateNote(Guid noteId, [FromBody] NoteRequest request)
         {
             var userId = HttpContext.User.ExtractUserId();
@@ -67,7 +67,7 @@ namespace MaskooAPI.Controllers
             return _mapper.Map<NoteResponse>(note);
         }
 
-        [HttpDelete("{required:noteId}")]
+        [HttpDelete("{noteId}")]
         public async Task<NoteResponse> DeleteNote(Guid noteId)
         {
             var userId = HttpContext.User.ExtractUserId();

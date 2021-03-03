@@ -7,7 +7,7 @@ namespace DAL.Repositories.Notes
 {
     public interface INoteRepository : IRepository<Note>
     {
-        
-        Task<ICollection<Note>> GetAllByUserId(Guid userId)
+
+        Task<ICollection<Note>> GetAllByUserId(Guid userId);
     }
 }

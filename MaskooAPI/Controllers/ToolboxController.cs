@@ -25,11 +25,21 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ToolboxResponse> GetToolbox()
+        public async Task<ToolboxResponse> GetAllUserToolboxes()
         {
             var userId = HttpContext.User.ExtractUserId();
 
-            var Toolbox = await _toolService.GetToolboxAsync(userId);
+            var Toolbox = await _toolService.GetAllUserToolboxes(userId);
+
+            return _mapper.Map<ToolboxResponse>(Toolbox);
+        }
+
+        [HttpGet("{toolboxId}")]
+        public async Task<ToolboxResponse> GetToolbox(Guid toolboxId)
+        {
+            var userId = HttpContext.User.ExtractUserId();
+
+            var Toolbox = await _toolService.GetToolboxAsync(toolboxId);
 
             return _mapper.Map<ToolboxResponse>(Toolbox);
         }
