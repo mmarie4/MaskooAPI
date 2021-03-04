@@ -20,7 +20,7 @@ namespace MaskooAPI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls("http://localhost:7000");
+                    webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:7000");
                 });
     }
 }
