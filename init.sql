@@ -33,7 +33,7 @@ CREATE TABLE users (
 
 CREATE TABLE toolboxes (
     id uuid,
-    user_id guuid,
+    user_id uuid,
     label varchar,
     created_at timestamp,
     created_by uuid,

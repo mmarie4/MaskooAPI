@@ -44,6 +44,12 @@ namespace Services.Users
 
         public async Task<(User, string)> SignUpAsync(SignUpParameter signUpParameter)
         {
+            var existingUser = await _userRepository.GetByEmailAsync(signUpParameter.Email);
+            if (existingUser != null)
+            {
+                throw new Exception("Email already used");
+            }
+
             var salt = _secretService.GenerateSalt();
             var user = new User()
             {
