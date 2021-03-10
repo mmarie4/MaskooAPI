@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DAL.Entities;
 using DAL.Entities.Diaries;
@@ -51,6 +52,7 @@ namespace Services.Diaries
             
             day.Stamp(userId);
 
+            if (diary.Days == null) diary.Days = new List<Day>();
             diary.Days.Add(day);
             
             diary.Stamp(userId, false);
