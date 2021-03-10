@@ -51,12 +51,9 @@ namespace Services.Diaries
             };
             
             day.Stamp(userId);
+            await _dayRepository.AddAsync(day);
 
-            if (diary.Days == null) diary.Days = new List<Day>();
-            diary.Days.Add(day);
-            
             diary.Stamp(userId, false);
-
             var result = await _diaryRepository.Update(diary);
             await _diaryRepository.SaveAsync();
 
