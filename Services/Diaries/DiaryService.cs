@@ -41,7 +41,20 @@ namespace Services.Diaries
             return diary;
         }
 
-        public async Task<Diary> AddDayAsync(Guid userId, Guid diaryId, DateTime date) {
+        public async Task<Diary> PatchDayContentAsync(Guid userId, Guid diaryId, DateTime date, DayUpdateParameter parameter)
+        {
+            var day = await _dayRepository.GetByDateAsync(date);
+            if (day == null)
+            {
+                var _ = await AddDayAsync(userId, diaryId, date);
+            }
+
+            var diary = await UpdateDayAsync(userId, diaryId, day.Id, parameter);
+
+            return diary;
+        }
+
+        private async Task<Diary> AddDayAsync(Guid userId, Guid diaryId, DateTime date) {
 
             var diary = await _diaryRepository.GetByIdAsync(diaryId);
             var day = new Day()
@@ -60,7 +73,7 @@ namespace Services.Diaries
             return result;
         }
 
-        public async Task<Diary> UpdateDayAsync(Guid userId, Guid diaryId, Guid dayId, DayUpdateParameter updateDayParameter)
+        private async Task<Diary> UpdateDayAsync(Guid userId, Guid diaryId, Guid dayId, DayUpdateParameter updateDayParameter)
         {
             var day = await _dayRepository.GetByIdAsync(dayId);
             if (day == null)
@@ -69,7 +82,6 @@ namespace Services.Diaries
             }
 
             day.Content = updateDayParameter.Content;
-            day.Date = updateDayParameter.Date;
             day.Stamp(userId, false);
 
             var result = await _dayRepository.Update(day);
@@ -78,18 +90,6 @@ namespace Services.Diaries
             return await _diaryRepository.GetByIdAsync(diaryId);
         }
 
-        public async Task<Diary> RemoveDayAsync(Guid diaryId, Guid dayId)
-        {
-            var day = await _dayRepository.GetByIdAsync(dayId);
-            if (day == null)
-            {
-                throw new Exception($"Day not found with id {dayId}");
-            }
 
-            var result = await _dayRepository.Remove(day);
-            await _dayRepository.SaveAsync();
-
-            return await _diaryRepository.GetByIdAsync(diaryId);
-        }
     }
 }
