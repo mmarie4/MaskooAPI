@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DAL.Entities.Diaries;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ namespace DAL.Repositories.Diaries
 
         public async Task<Diary> GetByUserIdAsync(Guid userId)
         {
-            return await Entities.Include(d => d.Days).FirstOrDefaultAsync(d => d.UserId == userId);
+            return await Entities.FirstOrDefaultAsync(d => d.UserId == userId);
         }
     }
 }

@@ -26,11 +26,11 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<DiaryResponse> GetDiary()
+        public async Task<DiaryResponse> GetDiary([FromQuery] DateTime? from, [FromQuery] DateTime? to)
         {
             var userId = HttpContext.User.ExtractUserId();
             
-            var diary = await _diaryService.GetDiaryAsync(userId, null, null);
+            var diary = await _diaryService.GetDiaryAsync(userId, from, to);
 
             return _mapper.Map<DiaryResponse>(diary);
         }

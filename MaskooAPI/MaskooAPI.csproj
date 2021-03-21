@@ -18,4 +18,12 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="MaskooClient\Shared\_HomeLayout.cshtml" />
+    <Content Remove="MaskooClient\Shared\_PublicLayout.cshtml" />
+    <Content Remove="MaskooClient\Pages\Toolboxes.cshtml" />
+    <Content Remove="MaskooClient\Pages\Diary.cshtml" />
+    <Content Remove="MaskooClient\Pages\Login.cshtml" />
+    <Content Remove="MaskooClient\Pages\Notes.cshtml" />
+  </ItemGroup>
 </Project>
