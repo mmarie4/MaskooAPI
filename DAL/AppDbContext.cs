@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DAL.Entities.Diaries;
+using DAL.Entities.Notes;
 using DAL.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ namespace DAL
         }
 
         public DbSet<Diary> Diaries { get; set; }
+        public DbSet<Note> Notes { get; set; }
         public DbSet<User> Users { get; set; }
 
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Notes;
 using Services.Notes.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MaskooAPI.Controllers
@@ -26,13 +27,13 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<NoteResponse> GetAllUserNote()
+        public async Task<ICollection<NoteResponse>> GetAllUserNote()
         {
             var userId = HttpContext.User.ExtractUserId();
 
             var note = await _noteService.GetAllUserNotesAsync(userId);
 
-            return _mapper.Map<NoteResponse>(note);
+            return _mapper.Map<ICollection<NoteResponse>>(note);
         }
 
         [HttpGet("{noteId}")]
