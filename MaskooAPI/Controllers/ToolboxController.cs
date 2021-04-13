@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Tools;
 using Services.Tools.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MaskooAPI.Controllers
@@ -25,13 +26,25 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ToolboxResponse> GetAllUserToolboxes()
+        public async Task<ICollection<ToolboxResponse>> GetAllUserToolboxes()
         {
             var userId = HttpContext.User.ExtractUserId();
 
             var Toolbox = await _toolService.GetAllUserToolboxes(userId);
 
-            return _mapper.Map<ToolboxResponse>(Toolbox);
+            return _mapper.Map<ICollection<ToolboxResponse>>(Toolbox);
+        }
+
+        [HttpPost]
+        public async Task<ToolboxResponse> AddToolbox([FromBody] ToolboxCreationRequest request)
+        {
+            var userId = HttpContext.User.ExtractUserId();
+
+            var parameter = _mapper.Map<ToolboxParameter>(request);
+
+            var toolbox = await _toolService.CreateToolboxAsync(userId, parameter);
+
+            return _mapper.Map<ToolboxResponse>(toolbox);
         }
 
         [HttpGet("{toolboxId}")]

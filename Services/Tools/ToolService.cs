@@ -29,11 +29,11 @@ namespace Services.Tools
             return await _toolboxRepository.GetByIdAsync(toolboxId);
         }
 
-        public async Task<Toolbox> CreateToolboxAsync(Guid userId, string label)
+        public async Task<Toolbox> CreateToolboxAsync(Guid userId, ToolboxParameter parameter)
         {
             var toolbox = new Toolbox()
             {
-                Label = label
+                Label = parameter.Name
             };
             toolbox.Stamp(userId);
 

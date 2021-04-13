@@ -12,7 +12,7 @@ namespace Services.Tools
 
         Task<Toolbox> GetToolboxAsync(Guid toolboxId);
 
-        Task<Toolbox> CreateToolboxAsync(Guid userId, string label);
+        Task<Toolbox> CreateToolboxAsync(Guid userId, ToolboxParameter parameter);
 
         Task<Toolbox> AddToolAsync(Guid userId, Guid toolboxId, ToolParameter toolPrameter);
 
