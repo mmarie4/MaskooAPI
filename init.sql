@@ -54,6 +54,7 @@ CREATE TABLE tools (
 
 CREATE TABLE notes (
     id uuid,
+    user_id uuid,
     title varchar,
     content varchar,
     created_at timestamp,

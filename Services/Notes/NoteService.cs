@@ -38,9 +38,12 @@ namespace Services.Notes
 
             note.Title = noteParameter.Title;
             note.Content = noteParameter.Content;
+            note.UserId = userId;
             note.Stamp(userId);
 
             var result = await _noteRepository.AddAsync(note);
+
+            await _noteRepository.SaveAsync();
 
             return result;
         }
@@ -55,6 +58,8 @@ namespace Services.Notes
 
             var result = await _noteRepository.Update(note);
 
+            await _noteRepository.SaveAsync();
+
             return result;
         }
 
@@ -63,6 +68,8 @@ namespace Services.Notes
             var note = await _noteRepository.GetByIdAsync(noteId);
 
             var result = await _noteRepository.Remove(note);
+
+            await _noteRepository.SaveAsync();
 
             return result;
         }

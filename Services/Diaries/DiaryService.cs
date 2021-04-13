@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DAL.Entities;
 using DAL.Entities.Diaries;
@@ -27,6 +26,12 @@ namespace Services.Diaries
                 throw new Exception($"Diary not found for user {userId}");
             }
 
+            if (from.HasValue && to.HasValue)
+            {
+                var days = await _dayRepository.GetByFromToDatesAsync(from.Value, to.Value);
+                diary.Days = days;
+            }
+
             return diary;
         }
 
@@ -46,21 +51,21 @@ namespace Services.Diaries
             var day = await _dayRepository.GetByDateAsync(date);
             if (day == null)
             {
-                var _ = await AddDayAsync(userId, diaryId, date);
+                return await AddDayAsync(userId, diaryId, date,parameter.Content);
+            } else
+            {
+                return await UpdateDayAsync(userId, diaryId, day.Id, parameter);
             }
-
-            var diary = await UpdateDayAsync(userId, diaryId, day.Id, parameter);
-
-            return diary;
         }
 
-        private async Task<Diary> AddDayAsync(Guid userId, Guid diaryId, DateTime date) {
+        private async Task<Diary> AddDayAsync(Guid userId, Guid diaryId, DateTime date, string content) {
 
             var diary = await _diaryRepository.GetByIdAsync(diaryId);
             var day = new Day()
             {
                 DiaryId = diary.Id,
-                Date = date
+                Date = date,
+                Content = content
             };
             
             day.Stamp(userId);
