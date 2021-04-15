@@ -2,6 +2,7 @@ using AutoMapper;
 using DAL;
 using DAL.Repositories.Diaries;
 using DAL.Repositories.Notes;
+using DAL.Repositories.Tools;
 using DAL.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,7 @@ using Newtonsoft.Json.Serialization;
 using Services.Diaries;
 using Services.Notes;
 using Services.SecretService;
+using Services.Tools;
 using Services.Users;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,12 +83,14 @@ namespace MaskooAPI
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ISecretService, SecretService>();
             services.AddTransient<INoteService, NoteService>();
+            services.AddTransient<IToolService, ToolService>();
 
             // Repositories
             services.AddTransient<IDiaryRepository, DiaryRepository>();
             services.AddTransient<IDayRepository, DayRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<INoteRepository, NoteRepository>();
+            services.AddTransient<IToolRepository, ToolRepository>();
 
             // Db context
             services.AddDbContext<AppDbContext>(opt =>
