@@ -91,6 +91,7 @@ namespace MaskooAPI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<INoteRepository, NoteRepository>();
             services.AddTransient<IToolRepository, ToolRepository>();
+            services.AddTransient<IToolboxRepository, ToolboxRepository>();
 
             // Db context
             services.AddDbContext<AppDbContext>(opt =>
