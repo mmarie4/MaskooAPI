@@ -14,6 +14,8 @@ namespace Services.Tools
 
         Task<Toolbox> CreateToolboxAsync(Guid userId, ToolboxParameter parameter);
 
+        Task<Toolbox> UpdateToolboxAsync(Guid userId, Guid toolboxId, ToolboxParameter parameter);
+
         Task<Toolbox> DeleteToolBoxAsync(Guid userId, Guid toolboxId);
 
         Task<Toolbox> AddToolAsync(Guid userId, Guid toolboxId, ToolParameter toolPrameter);
