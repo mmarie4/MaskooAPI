@@ -15,7 +15,7 @@ namespace DAL.Repositories.Notes
 
         public async Task<ICollection<Note>> GetAllByUserId(Guid userId)
         {
-            return await Entities.Where(x => x.UserId == userId).ToListAsync();
+            return await Entities.OrderByDescending(x => x.UpdatedAt).Where(x => x.UserId == userId).ToListAsync();
         }
     }
 }

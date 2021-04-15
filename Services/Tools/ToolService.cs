@@ -43,6 +43,16 @@ namespace Services.Tools
             return result;
         }
 
+        public async Task<Toolbox> DeleteToolBoxAsync(Guid userId, Guid toolboxId)
+        {
+            var toolbox = await _toolboxRepository.GetByIdAsync(toolboxId);
+
+            var result = await _toolboxRepository.Remove(toolbox);
+            await _toolboxRepository.SaveAsync();
+
+            return result;
+        }
+
         public async Task<Toolbox> AddToolAsync(Guid userId, Guid toolboxId, ToolParameter toolParameter)
         {
             var toolbox = await _toolboxRepository.GetByIdAsync(toolboxId);

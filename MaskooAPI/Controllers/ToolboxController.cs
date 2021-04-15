@@ -52,9 +52,19 @@ namespace MaskooAPI.Controllers
         {
             var userId = HttpContext.User.ExtractUserId();
 
-            var Toolbox = await _toolService.GetToolboxAsync(toolboxId);
+            var toolbox = await _toolService.GetToolboxAsync(toolboxId);
 
-            return _mapper.Map<ToolboxResponse>(Toolbox);
+            return _mapper.Map<ToolboxResponse>(toolbox);
+        }
+
+        [HttpDelete("{toolboxId}")]
+        public async Task<ToolboxResponse> DeleteToolbox(Guid toolboxId)
+        {
+            var userId = HttpContext.User.ExtractUserId();
+
+            var toolbox = await _toolService.DeleteToolBoxAsync(userId, toolboxId);
+
+            return _mapper.Map<ToolboxResponse>(toolbox);
         }
 
         [HttpPost("{toolboxId}/tools")]
