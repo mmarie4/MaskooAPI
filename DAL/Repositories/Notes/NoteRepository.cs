@@ -13,9 +13,21 @@ namespace DAL.Repositories.Notes
         {
         }
 
-        public async Task<ICollection<Note>> GetAllByUserId(Guid userId)
+        public async Task<ICollection<Note>> GetAllByUserId(Guid userId, string searchTerm)
         {
-            return await Entities.OrderByDescending(x => x.UpdatedAt).Where(x => x.UserId == userId).ToListAsync();
+            if (searchTerm == null)
+            {
+                return await Entities
+                                .OrderByDescending(x => x.UpdatedAt)
+                                .Where(x => x.UserId == userId)
+                                .ToListAsync();
+            } else
+            {
+                return await Entities
+                                .OrderByDescending(x => x.UpdatedAt)
+                                .Where(x => x.UserId == userId && x.Title.Contains(searchTerm))
+                                .ToListAsync();
+            }
         }
     }
 }

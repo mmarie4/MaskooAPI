@@ -27,11 +27,11 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ICollection<NoteResponse>> GetAllUserNote()
+        public async Task<ICollection<NoteResponse>> GetAllUserNote([FromQuery(Name = "search_term")] string searchTerm)
         {
             var userId = HttpContext.User.ExtractUserId();
 
-            var note = await _noteService.GetAllUserNotesAsync(userId);
+            var note = await _noteService.GetAllUserNotesAsync(userId, searchTerm);
 
             return _mapper.Map<ICollection<NoteResponse>>(note);
         }

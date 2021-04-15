@@ -18,9 +18,9 @@ namespace Services.Notes
             _noteRepository = noteRepository;
         }
 
-        public async Task<ICollection<Note>> GetAllUserNotesAsync(Guid userId)
+        public async Task<ICollection<Note>> GetAllUserNotesAsync(Guid userId, string searchTerm)
         {
-            var notes = await _noteRepository.GetAllByUserId(userId);
+            var notes = await _noteRepository.GetAllByUserId(userId, searchTerm);
 
             return notes;
         }
