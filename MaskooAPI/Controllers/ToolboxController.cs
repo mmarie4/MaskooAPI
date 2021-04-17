@@ -36,7 +36,7 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ToolboxResponse> AddToolbox([FromBody] ToolboxCreationRequest request)
+        public async Task<ToolboxResponse> AddToolbox([FromBody] ToolboxRequest request)
         {
             var userId = HttpContext.User.ExtractUserId();
 
@@ -48,7 +48,7 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpPut("{toolboxId}")]
-        public async Task<ToolboxResponse> UpdateToolbox(Guid toolboxId, [FromBody] ToolboxCreationRequest request)
+        public async Task<ToolboxResponse> UpdateToolbox(Guid toolboxId, [FromBody] ToolboxRequest request)
         {
             var userId = HttpContext.User.ExtractUserId();
 

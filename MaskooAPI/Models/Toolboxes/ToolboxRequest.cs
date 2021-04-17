@@ -1,6 +1,6 @@
 ﻿namespace MaskooAPI.Models.Toolboxes
 {
-    public class ToolboxCreationRequest
+    public class ToolboxRequest
     {
         public string Name { get; set; }
     }
