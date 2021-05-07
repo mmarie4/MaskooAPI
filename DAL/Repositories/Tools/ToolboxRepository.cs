@@ -26,7 +26,7 @@ namespace DAL.Repositories.Tools
             {
                 return await Entities
                                 .OrderByDescending(x => x.UpdatedAt)
-                                .Where(x => x.UserId == userId && x.Label.Contains(searchTerm))
+                                .Where(x => x.UserId == userId && x.Label.ToLower().Contains(searchTerm.ToLower()))
                                 .ToListAsync();
             }
         }
