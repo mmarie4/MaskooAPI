@@ -33,7 +33,8 @@ namespace Services.Tools
         {
             var toolbox = new Toolbox()
             {
-                Label = parameter.Name
+                Label = parameter.Name,
+                UserId = userId
             };
             toolbox.Stamp(userId);
 
