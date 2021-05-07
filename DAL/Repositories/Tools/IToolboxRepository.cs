@@ -7,6 +7,6 @@ namespace DAL.Repositories.Tools
 {
     public interface IToolboxRepository : IRepository<Toolbox>
     {
-        Task<ICollection<Toolbox>> GetAllByUserId(Guid userId);
+        Task<ICollection<Toolbox>> GetAllByUserId(Guid userId, string searchTerm);
     }
 }

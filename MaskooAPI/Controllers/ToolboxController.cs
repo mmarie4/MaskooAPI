@@ -26,11 +26,11 @@ namespace MaskooAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ICollection<ToolboxResponse>> GetAllUserToolboxes()
+        public async Task<ICollection<ToolboxResponse>> GetAllUserToolboxes([FromQuery(Name = "search_term")] string searchTerm)
         {
             var userId = HttpContext.User.ExtractUserId();
 
-            var Toolbox = await _toolService.GetAllUserToolboxes(userId);
+            var Toolbox = await _toolService.GetAllUserToolboxes(userId, searchTerm);
 
             return _mapper.Map<ICollection<ToolboxResponse>>(Toolbox);
         }

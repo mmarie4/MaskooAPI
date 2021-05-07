@@ -13,9 +13,22 @@ namespace DAL.Repositories.Tools
         {
         }
 
-        public async Task<ICollection<Toolbox>> GetAllByUserId(Guid userId)
+        public async Task<ICollection<Toolbox>> GetAllByUserId(Guid userId, string searchTerm)
         {
-            return await Entities.Where(x => x.UserId == userId).ToListAsync();
+            if (searchTerm == null)
+            {
+                return await Entities
+                                .OrderByDescending(x => x.UpdatedAt)
+                                .Where(x => x.UserId == userId)
+                                .ToListAsync();
+            }
+            else
+            {
+                return await Entities
+                                .OrderByDescending(x => x.UpdatedAt)
+                                .Where(x => x.UserId == userId && x.Label.Contains(searchTerm))
+                                .ToListAsync();
+            }
         }
     }
 }

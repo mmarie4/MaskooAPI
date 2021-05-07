@@ -19,9 +19,9 @@ namespace Services.Tools
             _toolboxRepository = toolboxRepository;
         }
 
-        public async Task<ICollection<Toolbox>> GetAllUserToolboxes(Guid userId)
+        public async Task<ICollection<Toolbox>> GetAllUserToolboxes(Guid userId, string searchTerm)
         {
-            return await _toolboxRepository.GetAllByUserId(userId);
+            return await _toolboxRepository.GetAllByUserId(userId, searchTerm);
         }
 
         public async Task<Toolbox> GetToolboxAsync(Guid toolboxId)

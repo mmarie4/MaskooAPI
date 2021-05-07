@@ -8,7 +8,7 @@ namespace Services.Tools
 {
     public interface IToolService
     {
-        Task<ICollection<Toolbox>> GetAllUserToolboxes(Guid userId);
+        Task<ICollection<Toolbox>> GetAllUserToolboxes(Guid userId, string searchTerm);
 
         Task<Toolbox> GetToolboxAsync(Guid toolboxId);
 
