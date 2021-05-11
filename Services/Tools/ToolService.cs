@@ -77,6 +77,7 @@ namespace Services.Tools
                 Value = toolParameter.Value
             };
             tool.Stamp(userId);
+            toolbox.Tools.Add(tool);
 
             toolbox.Stamp(userId, false);
 
