@@ -22,9 +22,5 @@ namespace DAL.Entities
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        public Entity()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }

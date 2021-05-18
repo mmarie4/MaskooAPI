@@ -20,6 +20,7 @@ namespace DAL.Repositories.Tools
                 return await Entities
                                 .OrderByDescending(x => x.UpdatedAt)
                                 .Where(x => x.UserId == userId)
+                                .Include(x => x.Tools)
                                 .ToListAsync();
             }
             else
@@ -27,8 +28,16 @@ namespace DAL.Repositories.Tools
                 return await Entities
                                 .OrderByDescending(x => x.UpdatedAt)
                                 .Where(x => x.UserId == userId && x.Label.ToLower().Contains(searchTerm.ToLower()))
+                                .Include(x => x.Tools)
                                 .ToListAsync();
             }
+        }
+
+        public override async Task<Toolbox> GetByIdAsync(Guid id)
+        {
+            return await Entities
+                            .Include(x => x.Tools)
+                            .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

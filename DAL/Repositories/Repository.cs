@@ -41,7 +41,7 @@ namespace DAL.Repositories
         /// </summary>
         /// <param name="id">Id of the entity</param>
         /// <returns></returns>
-        public async Task<TEntity> GetByIdAsync(Guid id)
+        public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await Entities.FirstOrDefaultAsync(x => x.Id == id);
         }

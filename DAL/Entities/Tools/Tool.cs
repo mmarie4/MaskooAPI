@@ -10,7 +10,6 @@ namespace DAL.Entities.Tools
         [ForeignKey("toolboxes")]
         public Guid ToolboxId { get; set; }
 
-        [NotMapped]
         public Toolbox Toolbox { get; set; }
 
         [Column("label")]
