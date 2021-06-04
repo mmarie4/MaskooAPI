@@ -23,7 +23,7 @@ namespace DAL.Entities.User
         [Column("password_salt")]
         public string PasswordSalt { get; set; }
 
-        public virtual Diary Diary { get; set; }
+        public Diary Diary { get; set; }
 
     }
 }

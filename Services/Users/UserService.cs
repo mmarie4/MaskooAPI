@@ -53,6 +53,7 @@ namespace Services.Users
             var salt = _secretService.GenerateSalt();
             var user = new User()
             {
+                Id = Guid.NewGuid(),
                 Email = signUpParameter.Email,
                 FirstName = signUpParameter.FirstName,
                 LastName = signUpParameter.LastName,
