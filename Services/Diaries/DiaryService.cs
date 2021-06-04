@@ -28,7 +28,7 @@ namespace Services.Diaries
 
             if (from.HasValue && to.HasValue)
             {
-                var days = await _dayRepository.GetByFromToDatesAsync(from.Value, to.Value);
+                var days = await _dayRepository.GetByFromToDatesAsync(diary.Id, from.Value, to.Value);
                 diary.Days = days;
             }
 

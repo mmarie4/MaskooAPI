@@ -8,6 +8,6 @@ namespace DAL.Repositories.Diaries
     public interface IDayRepository : IRepository<Day>
     {
         Task<Day> GetByDateAsync(DateTime date);
-        Task<ICollection<Day>> GetByFromToDatesAsync(DateTime from, DateTime to);
+        Task<ICollection<Day>> GetByFromToDatesAsync(Guid diaryId, DateTime from, DateTime to);
     }
 }
