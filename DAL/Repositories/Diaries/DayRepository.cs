@@ -18,10 +18,12 @@ namespace DAL.Repositories.Diaries
             return await Entities.FirstOrDefaultAsync(x => x.Date == date.Date);
         }
 
-        public async Task<ICollection<Day>> GetByFromToDatesAsync(DateTime from, DateTime to)
+        public async Task<ICollection<Day>> GetByFromToDatesAsync(Guid diaryId, DateTime from, DateTime to)
         {
             return await Entities
-                            .Where(d => d.Date.Date >= from.Date && d.Date.Date < to.Date)
+                            .Where(d => d.DiaryId == diaryId
+                                        && d.Date.Date >= from.Date
+                                        && d.Date.Date < to.Date)
                             .ToListAsync();
         }
     }
