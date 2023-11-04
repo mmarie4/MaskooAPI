@@ -17,6 +17,7 @@ using Newtonsoft.Json.Serialization;
 using Services.Diaries;
 using Services.Notes;
 using Services.SecretService;
+using Services.SecretService.Configuration;
 using Services.Tools;
 using Services.Users;
 using System.Text;
@@ -84,6 +85,8 @@ namespace MaskooAPI
             services.AddTransient<ISecretService, SecretService>();
             services.AddTransient<INoteService, NoteService>();
             services.AddTransient<IToolService, ToolService>();
+
+            services.AddOptions<SecretConfiguration>("Secret");
 
             // Repositories
             services.AddTransient<IDiaryRepository, DiaryRepository>();

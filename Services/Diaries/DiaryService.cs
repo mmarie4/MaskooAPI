@@ -52,7 +52,8 @@ namespace Services.Diaries
             if (day == null)
             {
                 return await AddDayAsync(userId, diaryId, date,parameter.Content);
-            } else
+            }
+            else
             {
                 return await UpdateDayAsync(userId, diaryId, day.Id, parameter);
             }

@@ -1,5 +1,7 @@
 ﻿using DAL.Entities.User;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Services.SecretService.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,6 +13,13 @@ namespace Services.SecretService
 {
     public class SecretService : ISecretService
     {
+        private readonly SecretConfiguration _config;
+
+        public SecretService(IOptions<SecretConfiguration> config)
+        {
+            _config = config.Value;
+        }
+
         /// <summary>
         /// Hash a password
         /// </summary>
@@ -49,11 +58,6 @@ namespace Services.SecretService
         // you can run a small test by calling the GenerateSecureSecret() function to generate a random secure secret once, grab it, and use it as the secret above 
         // or you can save it into appsettings.json file and then load it from them, the choice is yours
 
-        public const string Issuer = "https://localhost:5001";
-        public const string Audience = "https://localhost:5001";
-
-        public const string Secret = "OFRC1j9aaR2BvADxNWlG2pmuD392UfQBZZLM1fuzDEzDlEpSsn+btrpJKd3FfY855OMA9oK4Mc8y48eYUrVUSw==";
-
         public string GenerateSecureSecret()
         {
             var hmac = new HMACSHA256();
@@ -62,7 +66,7 @@ namespace Services.SecretService
 
         public string GenerateToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Secret));
 
             var permClaims = new List<Claim>()
             {
@@ -70,11 +74,11 @@ namespace Services.SecretService
             };
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-            var token = new JwtSecurityToken(Issuer, //Issure    
-                            Audience,  //Audience    
-                            permClaims,
-                            expires: DateTime.Now.AddDays(1),
-                            signingCredentials: signingCredentials);
+            var token = new JwtSecurityToken(_config.Issuer,
+                                             _config.Audience,
+                                             permClaims,
+                                             expires: DateTime.Now.AddDays(1),
+                                             signingCredentials: signingCredentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
